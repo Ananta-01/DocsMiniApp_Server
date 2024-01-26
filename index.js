@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const helmet = require("helmet");
+const authRouter = require("./routes/auth");
 
 const app = express();
 
@@ -27,9 +28,7 @@ mongoose
   });
 
 // Route
-app.get("/notes", (req, res) => {
-  res.send("Notes fetch successful");
-});
+app.use("/api/auth", authRouter)
 
 // Start the server
 app.listen(8000, () => {
