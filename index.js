@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const authRouter = require("./routes/auth");
+const notesRouter = require("./routes/notes");
 
 const app = express();
 
@@ -29,6 +30,7 @@ mongoose
 
 // Route
 app.use("/api/auth", authRouter)
+app.use("/api/notes", notesRouter)
 
 // Start the server
 app.listen(8000, () => {
