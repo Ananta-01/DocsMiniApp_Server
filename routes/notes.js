@@ -55,7 +55,7 @@ router.put("/updateNote/:id", async (req, res) => {
 router.get("/getNotes/:userId", async (req, res) => {
   try {
     const currentUser = await User.findById(req.params.userId);
-    
+
     !currentUser && res.status(400).json("user not found");
     const notes = await Note.find({ postedBy: req.params.userId });
 
