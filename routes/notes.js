@@ -3,7 +3,6 @@ const Note = require("../models/Notes");
 const User = require("../models/User");
 
 //create notes
-
 router.post("/addNote", async (req, res) => {
   try {
     const note = new Note({
