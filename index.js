@@ -40,7 +40,7 @@ process.on("unhandledRejection", (reason, promise) => {
 app.use("/api/auth", authRouter);
 app.use("/api/notes", notesRouter);
 
-app.get('/hello', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 // Start the server
