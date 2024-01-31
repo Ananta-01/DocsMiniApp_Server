@@ -6,9 +6,9 @@ const helmet = require("helmet");
 const authRouter = require("./routes/auth");
 const notesRouter = require("./routes/notes");
 
-const app = express();
-
 dotenv.config();
+
+const app = express();
 
 // Middleware
 app.use(express.json());
@@ -19,35 +19,30 @@ app.use(helmet());
 const encodedPassword = encodeURIComponent("Ananta@123");
 
 // MongoDB Connection
-try {
-  mongoose.connect(`mongodb+srv://Ananta-01:${encodedPassword}@cluster0.4xmrzo1.mongodb.net/?retryWrites=true&w=majority`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+mongoose.connect(`mongodb+srv://Ananta-01:${encodedPassword}@cluster0.4xmrzo1.mongodb.net/?retryWrites=true&w=majority`, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => {
+    console.log("MongoDB database connected successfully!!");
+    
+    // Route
+    app.use("/api/auth", authRouter);
+    app.use("/api/notes", notesRouter);
+
+    app.get('/', (req, res) => {
+      res.send('Hello, World!');
+    });
+
+    // Start the server
+    const PORT = process.env.PORT || 8000;
+    app.listen(PORT, () => {
+      console.log(`App is running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("MongoDB connection error:", error);
   });
-
-  console.log("MongoDB database connected successfully!!");
-} catch (error) {
-  console.error("MongoDB connection error:", error);
-}
-
-// Handle unhandled promise rejections
-process.on("unhandledRejection", (reason, promise) => {
-  console.error("Unhandled Rejection at:", promise, "reason:", reason);
-  // Application specific logging, rethrowing, or closing of promises can be done here
-});
-
-// Route
-app.use("/api/auth", authRouter);
-app.use("/api/notes", notesRouter);
-
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
-// Start the server
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  console.log(`App is running on port ${PORT}`);
-});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
