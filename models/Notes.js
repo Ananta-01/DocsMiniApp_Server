@@ -11,7 +11,6 @@ const Notes = new mongoose.Schema(
       type: String,
       min: 30,
       max: 200,
-      required: true,
     },
     postedBy: {
       type: String,
