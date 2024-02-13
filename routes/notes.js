@@ -32,25 +32,47 @@ router.delete("/deleteNote/:id", async (req, res) => {
   }
 });
 
-//update notes
+// //update notes
+// router.put("/updateNote/:id", async (req, res) => {
+//   try {
+//     const notes = await Note.findOne({ _id: req.params.id });
+//     !notes &&
+//       res.status(400).json({ message: "note not found ", status: false });
+//     const note = await Note.updateOne({
+//       title: req.body.title,
+//       description: req.body.description,
+//       postedBy: req.body.postedBy,
+//     });
+//     res
+//       .status(200)
+//       .json({ message: "note updated successfully", status: true });
+//   } catch (e) {
+//     res.status(500).json(e);
+//   }
+// });
 router.put("/updateNote/:id", async (req, res) => {
   try {
     const notes = await Note.findOne({ _id: req.params.id });
-    !notes &&
-      res.status(400).json({ message: "note not found ", status: false });
-    const note = await Note.updateOne({
-      title: req.body.title,
-      description: req.body.description,
-      postedBy: req.body.postedBy,
-    });
-    res
-      .status(200)
-      .json({ message: "note updated successfully", status: true });
+    if (!notes) {
+      return res.status(400).json({ message: "Note not found", status: false });
+    }
+
+    const updatedNote = await Note.updateOne(
+      { _id: req.params.id }, // Specify the query condition
+      {
+        $set: {
+          title: req.body.title,
+          description: req.body.description,
+          postedBy: req.body.postedBy,
+        },
+      }
+    );
+
+    res.status(200).json({ message: "Note updated successfully", status: true });
   } catch (e) {
     res.status(500).json(e);
   }
 });
-
 //get all notes
 router.get("/getNotes/:userId", async (req, res) => {
   try {
